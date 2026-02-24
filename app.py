@@ -15,9 +15,9 @@ selected_features = pickle.load(open(FEATURES_PATH, "rb"))
 def predict_churn(online_backup, paperless_billing, payment_method, monthly_charges, total_charges):
     
     # Extract numeric value from "0 - Yes"
-    online_backup = int(online_backup.split("-")[0])
-    payment_method = int(payment_method.split("-")[0])
-    paperless_billing = int(paperless_billing)
+    online_backup = int(str(online_backup).split("-")[0].strip())
+    payment_method = int(str(payment_method).split("-")[0].strip())
+    paperless_billing = 1 if paperless_billing else 0
 
     input_data = pd.DataFrame(
         [[online_backup, paperless_billing, payment_method, monthly_charges, total_charges]],
@@ -33,14 +33,18 @@ def predict_churn(online_backup, paperless_billing, payment_method, monthly_char
 interface = gr.Interface(
     fn=predict_churn,
     inputs=[
-        gr.Radio(["0 - Yes","1 - No","2 - No Internet Service"], label="Online Backup"),
+        gr.Radio(
+         ["0 - Yes","1 - No","2 - No Internet Service"],
+        label="Online Backup",
+        value="0 - Yes"
+        ),
         gr.Checkbox(label="Paperless Billing (Checked = Yes, Unchecked = No)"),
         gr.Radio([
             "0 - Electronic Check",
             "1 - Mailed Check",
             "2 - Bank Transfer (Automatic)",
             "3 - Credit Card (Automatic)"
-        ], label="Payment Method"),
+        ], label="Payment Method",value="0 - Electronic Check"),
         gr.Slider(0,150,step=0.1,label="Monthly Charges", value=50),
         gr.Slider(0,10000,step=0.1,label="Total Charges", value=1000)
     ],
