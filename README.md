@@ -92,7 +92,7 @@ To ensure reproducibility and consistent inference, the following components are
 
 This guarantees the deployment pipeline matches the training pipeline.
 
-**Here I added 2ChurnAnalysis file to make you know how i trained above saved components**
+**Here I added 2ChurnAnalysis.ipynb file to make you know how i trained above saved components**
 
 ---
 
